@@ -1,0 +1,73 @@
+
+.scrolly-interactive {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  font-family: @block-graphics;
+  line-height: 1.2;
+  font-size: 16px;
+
+  .hed {
+    font-family: @bold-graphics;
+    font-size: 30px;
+  }
+  .deck {
+    font-size: 22px;
+    padding: 20px 0;
+  }
+  .hed-wrapper {
+    max-width: 900px;
+    margin: auto;
+    padding: 0 30px;
+  }
+
+  .instructions {
+    .fa {
+      padding-left: 10px;
+    }
+  }
+
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: grey;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+  }
+  path {
+    // stroke-width: 4;
+    // opacity: 0.8;
+    fill: none;
+  }
+  .thicklines {
+    stroke-width: 4;
+  }
+  .domain {
+    display: none;
+  }
+  svg {
+    margin: auto;
+    text-align: center;
+  }
+  .tick {
+    line {
+      display: none;
+    }
+  }
+  .node {
+    text {
+      font-family: @bold-graphics;
+    }
+  }
+  #line-chart {
+    text-align: center;
+    margin: auto;
+    // width: 90%;
+    // overflow-x:scroll;
+  }
+  text {
+    font-family: @block-graphics;
+    font-size: 14px;
+    stroke-width: 1;
+  }
+
+}

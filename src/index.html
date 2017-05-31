@@ -3,23 +3,191 @@
 <!-- /build -->
 <!-- build:css inline -->
 <link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <!-- /build -->
-
+<script src="https://d3js.org/d3.v4.min.js"></script>
 
 
 
 
 <!-- Code that goes within WCM Freeform -->
 
+<div class="scrolly-interactive">
 
-<div></div>
+  <div class="hed-wrapper">
+    <div class="hed">The Drive to Dominance</div>
+    <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
+    <div class="instructions">Scroll right to see the ups and downs of the Warriors - Cavs rivalry.<i class="fa fa-hand-o-right" aria-hidden="true"></i></div>
+  </div>
 
+  <div class="chart-container">
+    <div id="line-chart"></div>
+  </div>
 
-
-
-
+</div>
 
 <!-- build:remove -->
 <%= t.include("partials/_bottom.html") %>
 <!-- /build -->
 
+<script>
+
+var statsData = <%= JSON.stringify(json.data) %>;
+console.log(statsData);
+// color by year function
+function color_by_team(team) {
+  if (team == "warriors") {
+    return "#006BB6";
+  } else if (team == "cavs"){
+    return "#860038";
+  }
+}
+
+// setting sizes of interactive
+var margin = {
+  top: 50,
+  right: 50,
+  bottom: 50,
+  left: 50
+};
+if (screen.width > 768) {
+  var width = 900 - margin.left - margin.right;
+  var height = 600 - margin.top - margin.bottom;
+} else if (screen.width <= 768 && screen.width > 480) {
+  var width = 720 - margin.left - margin.right;
+  var height = 600 - margin.top - margin.bottom;
+} else if (screen.width <= 480 && screen.width > 340) {
+  console.log("big phone");
+  var margin = {
+    top: 20,
+    right: 20,
+    bottom: 35,
+    left: 30
+  };
+  var width = 340 - margin.left - margin.right;
+  var height = 350 - margin.top - margin.bottom;
+} else if (screen.width <= 340) {
+  console.log("mini iphone")
+  var margin = {
+    top: 50,
+    right: 30,
+    bottom: 35,
+    left: 35
+  };
+  var width = 310 - margin.left - margin.right;
+  var height = 350 - margin.top - margin.bottom;
+}
+
+var	parseYr = d3.timeParse("%Y");
+
+// create SVG container for chart components
+var svgNBA = d3.select("#line-chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var g = svgNBA.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var x = d3.scaleTime().range([0, width]),
+    y = d3.scaleLinear().range([height, 0]);
+
+x.domain([parseYr(2007),parseYr(2016)]);
+y.domain([0,100]);
+
+var lineWarriors = d3.line()
+    .x(function(d) {
+      return x(parseYr(+d.years));
+    })
+    .y(function(d) {
+      return y(+d.w_wins);
+    });
+var lineCavs = d3.line()
+    .x(function(d) {
+      return x(parseYr(+d.years));
+    })
+    .y(function(d) {
+      return y(+d.c_wins);
+    });
+
+// g.append("g")
+//     .call(d3.axisLeft(y))
+//   .append("text")
+//     .attr("fill", "#000")
+//     .attr("transform", "rotate(-90)")
+//     .attr("y", 6)
+//     .attr("dy", "20px")
+//     .attr("text-anchor", "end")
+//     .text("Season wins")
+//     .select(".domain")
+//       .remove();
+
+g.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .append("text")
+      .text("Season")
+  .select(".domain")
+    .remove();
+
+// Add the filled area
+g.append("path")
+    .datum(statsData)
+    .attr("class","thicklines")
+    .style("stroke",color_by_team("warriors"))
+    .attr("d", lineWarriors);
+
+// Add the filled area
+g.append("path")
+    .datum(statsData)
+    .attr("class","thicklines")
+    .style("stroke",color_by_team("cavs"))
+    .attr("d", lineCavs);
+
+// draw dots
+var nodes = g.selectAll(".dot")
+    .data(statsData)
+  .enter().append("g")
+    .attr("class","node");
+
+nodes.append("circle")
+    .attr("class", "cavDot")
+    .attr("r", 5)
+    .attr("fill",color_by_team("cavs"))
+    .attr("cx", function(d) { return x(parseYr(+d.years)); })
+    .attr("cy", function(d) { return y(+d.c_wins); })
+
+nodes.append("circle")
+    .attr("class", "warDot")
+    .attr("r", 5)
+    .attr("fill",color_by_team("warriors"))
+    .attr("cx", function(d) { return x(parseYr(+d.years)); })
+    .attr("cy", function(d) { return y(+d.w_wins); })
+// var nodes = g.selectAll(".cavDot")
+//     .data(statsData)
+//     .enter().append("g")
+//     .attr("class","node");
+
+console.log(nodes);
+// nodes.enter().append("g")
+//   .attr("class","node");
+
+nodes.append("text")
+  .attr("dx", function(d) { return x(parseYr(+d.years))-15; })
+  .attr("dy", function(d) { return y(+d.c_wins)+20; })
+  .attr("fill",color_by_team("cavs"))
+  .text(function(d){
+    console.log(d.c_score);
+    return d.c_score;
+  });
+
+nodes.append("text")
+  .attr("dx", function(d) { return x(parseYr(+d.years))-15; })
+  .attr("dy", function(d) { return y(+d.w_wins)-20; })
+  .attr("fill",color_by_team("warriors"))
+  .text(function(d){
+    console.log(d.w_score);
+    return d.w_score;
+  });
+
+</script>
