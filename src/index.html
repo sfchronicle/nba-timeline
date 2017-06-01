@@ -17,12 +17,15 @@
   <div class="hed-wrapper">
     <div class="hed">The Drive to Dominance</div>
     <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
-    <div class="instructions">Scroll right to see the ups and downs of the Warriors - Cavs rivalry.<i class="fa fa-hand-o-right" aria-hidden="true"></i></div>
   </div>
+
+  <div id="warriors-fact"></div>
+  <div id="cavs-fact"></div>
 
   <div class="chart-container">
     <div id="line-chart"></div>
   </div>
+  <div class="credit">Emma O'Neill • <a href="mailto:eoneill@sfchronicle.com">eoneill@sfchronicle.com</a> • <a href = "https://twitter.com/emmaruthoneill" target="_blank">@emmaruthoneill</a></div>
 
 </div>
 
@@ -33,7 +36,6 @@
 <script>
 
 var statsData = <%= JSON.stringify(json.data) %>;
-console.log(statsData);
 // color by year function
 function color_by_team(team) {
   if (team == "warriors") {
@@ -45,7 +47,7 @@ function color_by_team(team) {
 
 // setting sizes of interactive
 var margin = {
-  top: 50,
+  top: 0,
   right: 50,
   bottom: 50,
   left: 50
@@ -93,7 +95,7 @@ var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]);
 
 x.domain([parseYr(2007),parseYr(2016)]);
-y.domain([0,100]);
+y.domain([0,90]);
 
 var lineWarriors = d3.line()
     .x(function(d) {
@@ -109,18 +111,6 @@ var lineCavs = d3.line()
     .y(function(d) {
       return y(+d.c_wins);
     });
-
-// g.append("g")
-//     .call(d3.axisLeft(y))
-//   .append("text")
-//     .attr("fill", "#000")
-//     .attr("transform", "rotate(-90)")
-//     .attr("y", 6)
-//     .attr("dy", "20px")
-//     .attr("text-anchor", "end")
-//     .text("Season wins")
-//     .select(".domain")
-//       .remove();
 
 g.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -144,6 +134,57 @@ g.append("path")
     .style("stroke",color_by_team("cavs"))
     .attr("d", lineCavs);
 
+
+// add the valueline path
+// add the area
+g.append("path")
+   .data([statsData])
+   .attr("class", "area")
+   .attr("fill",color_by_team("warriors"))
+   .attr("opacity","0.2")
+   .transition()
+       .duration(7000)
+       .attrTween('d', areaTweenWAR);
+
+g.append("path")
+  .data([statsData])
+  .attr("class", "area")
+  .attr("fill",color_by_team("cavs"))
+  .attr("opacity","0.2")
+  .transition()
+      .duration(7000)
+      .attrTween('d', areaTweenCAV);
+
+// define the area
+var areaWAR = d3.area()
+   .x(function(d) { return x(parseYr(+d.years)); })
+   .y0(height)
+   .y1(function(d) { return y(+d.w_wins); });
+
+function areaTweenWAR() {
+  var interpolate = d3.scaleQuantile()
+    .domain([0,1])
+    .range(d3.range(1, statsData.length + 1));
+  return function(t) {
+    return areaWAR(statsData.slice(0, interpolate(t)));
+  };
+}
+
+// define the area
+var areaCAV = d3.area()
+   .x(function(d) { return x(parseYr(+d.years)); })
+   .y0(height)
+   .y1(function(d) { return y(+d.c_wins); });
+
+function areaTweenCAV() {
+  var interpolate = d3.scaleQuantile()
+    .domain([0,1])
+    .range(d3.range(1, statsData.length + 1));
+  return function(t) {
+    return areaCAV(statsData.slice(0, interpolate(t)));
+  };
+}
+
 // draw dots
 var nodes = g.selectAll(".dot")
     .data(statsData)
@@ -163,21 +204,12 @@ nodes.append("circle")
     .attr("fill",color_by_team("warriors"))
     .attr("cx", function(d) { return x(parseYr(+d.years)); })
     .attr("cy", function(d) { return y(+d.w_wins); })
-// var nodes = g.selectAll(".cavDot")
-//     .data(statsData)
-//     .enter().append("g")
-//     .attr("class","node");
-
-console.log(nodes);
-// nodes.enter().append("g")
-//   .attr("class","node");
 
 nodes.append("text")
   .attr("dx", function(d) { return x(parseYr(+d.years))-15; })
   .attr("dy", function(d) { return y(+d.c_wins)+20; })
   .attr("fill",color_by_team("cavs"))
   .text(function(d){
-    console.log(d.c_score);
     return d.c_score;
   });
 
@@ -186,8 +218,8 @@ nodes.append("text")
   .attr("dy", function(d) { return y(+d.w_wins)-20; })
   .attr("fill",color_by_team("warriors"))
   .text(function(d){
-    console.log(d.w_score);
     return d.w_score;
   });
+
 
 </script>
