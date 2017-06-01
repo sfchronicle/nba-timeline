@@ -1,11 +1,10 @@
-
-
+var statsData = [{"id":0,"years":2007,"season":"2007-2008","w_wins":48,"c_wins":45,"w_score":"48-34","c_score":"45-37","w_text":"A year after \"We Believe\" Warriors ended a run of 12 non-playoff seasons with 42 wins, Golden State finished ninth in West despite 48 wins, which were more than all but three teams in the East.","c_text":"A year after getting swept by the Spurs in the NBA Finals, Cavs regress and lose in Eastern Conference semifinals."},{"id":1,"years":2008,"season":"2008-2009","w_wins":29,"c_wins":66,"w_score":"29-53","c_score":"66-16","w_text":"Baron Davis signs with the Clippers and the Warriors slip to the 10th in the West.","c_text":"LeBron James wins first MVP, Mike Brown is coach of the year and Cavs set franchise record for wins only to lose to Magic in East finals."},{"id":2,"years":2009,"season":"2009-2010","w_wins":26,"c_wins":61,"w_score":"26-56","c_score":"61-21","w_text":"Co-Rookie of the year Stephen Curry averages 17.5 points per game. Injuries take a toll as Warriors finish 13th in the West.","c_text":"Another MVP for James, another loss in East semifinals."},{"id":3,"years":2010,"season":"2010-2011","w_wins":36,"c_wins":19,"w_score":"36-46","c_score":"19-63","w_text":"Ten-game improvement still leaves the Warriors 12th in the rugged West.","c_text":"Without James, who left for Miami, Cavs finish last in East and second worst in NBA."},{"id":4,"years":2011,"season":"2011-2012","w_wins":23,"c_wins":21,"w_score":"23-43","c_score":"21-45","w_text":"With Curry playing only 26 games after his second major ankle injury, the Warriors trade Monta Ellis and bench David Lee. They lose 17 of their final 20 games and get to keep their lottery pick, which was only protected if it was in the top eight.","c_text":"Kyrie Irving averages team-high 18.5 points in 51 games to win Rookie of the Year."},{"id":5,"years":2012,"season":"2012-2013","w_wins":47,"c_wins":24,"w_score":"47-35","c_score":"24-58","w_text":"With a starting lineup of Curry, Thompson, Bogut, Lee and Barnes, Warriors return to the playoffs, beating Denver in the first round before losing to the Spurs in six.","c_text":"Team with future Warriors Anderson Varejao, Shaun Livingston, Marreese Speights and Luke Walton finishes with league's third-worst record."},{"id":6,"years":2013,"season":"2013-2014","w_wins":51,"c_wins":33,"w_score":"51-31","c_score":"33-49","w_text":"First 50-win season since 1993-94 earns Warriors the sixth seed in the playoffs. But a late-season injury to Bogut proves costly in a first-round loss to the Clippers.","c_text":"With Brown back as coach, Cavs finish 5 games behind Hawks for 8th playoff spot."},{"id":7,"years":2014,"season":"2014-2015","w_wins":67,"c_wins":53,"w_score":"67-15","c_score":"53-29","w_text":"Curry wins the MVP, the Warriors set a franchise record for wins and they cruise through the playoffs with a 16-5 record, beating Cavs in six games for their first NBA title since 1974-75 season.","c_text":"Limited to 69 games by injuries in his return to Cleveland, James leads Cavs to second seed in East."},{"id":8,"years":2015,"season":"2015-2016","w_wins":73,"c_wins":57,"w_score":"73-9","c_score":"57-25","w_text":"A season-opening 24-game win streak, an NBA record 73 wins, Curry's 402 three-pointers and unanimous MVP selection all wiped out when they blow a 3-1 series lead to the Cavs in a Finals rematch.","c_text":"Cavs finish 16 games behind Warriors in regular season and fall behind 3-1 in Finals rematch before storming back."},{"id":9,"years":2016,"season":"2016-2017","w_wins":67,"c_wins":51,"w_score":"67-15","c_score":"51-31","w_text":"Integrating Kevin Durant along with a re-made bench, the Warriors still post the best record in the NBA. They go 12-0 in the first three rounds of the playoffs to set up Round 3 with the Cavs.","c_text":"Looking old and vunerable at times in the regular season, Cavs get the No. 2 seed in the East."}];
 
 // fills in HTML for year as years toggle
 var updateInfo = function(data) {
-  document.querySelector("#season").innerHTML = "<div class='season'>"+data.season+"</div>";
-  document.querySelector("#warriors-fact").innerHTML = "<div class='score warscore'>Warriors: "+data.w_score+"</div><div class='desc'>"+data.w_text+"</div>";
-  document.querySelector("#cavs-fact").innerHTML = "<div class='score cavscore'>Cavaliers: "+data.c_score+"</div><div class='desc'>"+data.c_text+"</div>";
+  document.querySelector("#season").innerHTML = "<div class='season'>"+data.season+'</div>';
+  document.querySelector("#warriors-fact").innerHTML = "<div class='score warscore'>Warriors: "+data.w_score+'</div>'+"<div class='desc'>"+data.w_text+'</div>';
+  document.querySelector("#cavs-fact").innerHTML = "<div class='score cavscore'>Cavaliers: "+data.c_score+'</div>'+"<div class='desc'>"+data.c_text+'</div>';
 };
 
 // color by year function
@@ -15,7 +14,7 @@ function color_by_team(team) {
   } else if (team == "cavs"){
     return "#860038";
   }
-};
+}
 
 // setting sizes of interactive
 var margin = {
@@ -304,4 +303,3 @@ function handleTouchMove(evt) {
     xDown = null;
     yDown = null;
 };
-
