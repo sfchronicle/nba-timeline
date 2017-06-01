@@ -19,13 +19,41 @@
     <%= t.include("partials/_nav.html") %>
 
 
-    <div class="container">
-      <p>Content goes here...</p>
+    <div class="scrolly-interactive">
+
+  <div class="hed-wrapper">
+    <div class="hed">The Drive to Dominance</div>
+    <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons.</div>
+    <div class="instructions">Scroll down to see how we got to Warriors-Cavs, Part III.<i class="fa fa-angle-double-down" aria-hidden="true"></i></div>
+  </div>
+
+  <div id="stick-here"></div>
+  <div class="interactive-box" id="stick-me">
+
+    <div class="fact-container">
+      <div id="season"></div>
+      <div id="warriors-fact" class="fact"></div>
+      <div id="cavs-fact" class="fact"></div>
     </div>
 
-    <%= t.include("partials/_footer.html") %>
+    <div class="chart-container">
+      <div id="line-chart"></div>
+    </div>
 
+  </div>
+  <div id="stick-ph"></div>
+  <div id="stop-stick-here"></div>
+
+  <div class="credit">Emma O'Neill • <a href="mailto:eoneill@sfchronicle.com">eoneill@sfchronicle.com</a> • <a href = "https://twitter.com/emmaruthoneill" target="_blank">@emmaruthoneill</a></div>
+
+</div>
+
+    <%= t.include("partials/_footer.html") %>
+    <script type="text/javascript">
+      var statsData = <%= JSON.stringify(json.data) %>;
+    </script>
     <script src="app.js" async></script>
+
     <%= t.include("partials/_helloSFC.html") %>
 
   </body>
