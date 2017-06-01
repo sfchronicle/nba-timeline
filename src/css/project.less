@@ -21,7 +21,11 @@
   }
   .fact-container {
     max-width: 900px;
+    text-align: left;
     margin: auto;
+    @media @tablet {
+      padding: 0 30px;
+    }
     .season {
       font-size: 20px;
       font-family: @bold-graphics;
@@ -34,10 +38,10 @@
     }
     .score {
       font-family: @med-graphics;
-      &.warriors {
+      &.warscore {
         color: #006BB6;
       }
-      &.cavs {
+      &.cavscore {
         color: #860038;
       }
     }
@@ -94,8 +98,32 @@
     margin: auto;
     font-size: 14px;
     font-family: @med-graphics;
+    @media @mobile {
+      padding: 0 30px;
+    }
     a {
       color: #006BB6;
+    }
+  }
+  .select-text {
+    font-family: @med-graphics;
+    display: inline-block;
+  }
+  .drop-down {
+    padding-top: 10px;
+    text-align: center;
+  }
+  .select-container {
+    display: inline-block;
+  }
+  #select-season {
+    pointer-events: all;
+    font-size: 16px;
+    min-width: 200px;
+    font-family: @block-graphics;
+    display: inline-block;
+    @media @mobile {
+      min-width: 0;
     }
   }
 

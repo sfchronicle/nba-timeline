@@ -8,8 +8,6 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 
 
-
-
 <!-- Code that goes within WCM Freeform -->
 
 <div class="scrolly-interactive">
@@ -25,6 +23,20 @@
     <div id="cavs-fact" class="fact"></div>
   </div>
 
+  <div class="controls">
+    <div class="drop-down">
+      <div class="select-text">Pause the animation and pick a year:</div>
+      <div class="select-container">
+        <select name="select" id="select-season">
+          <% [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016].forEach(function(d,idx){ %>
+            <% console.log(d); %>
+            <option value='<%=d%>' class="station"><%=d%> - <%=d+1%></option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <div class="chart-container">
     <div id="line-chart"></div>
   </div>
@@ -37,19 +49,19 @@
     How the Warriors and Cavs got here
   </div>
     <% json.timeline.forEach(function(date) { %>
-      
+
     <div class="timeline">
       <div class="block warriors">
          <h2><%= date.war_date %></h2>
          <p><%= date.war_text %></p>
-         
+
       </div>
       <div class="block cavs">
         <h2><%= date.cav_date %></h2>
         <p><%= date.cav_text %></p>
       </div>
     </div>
-     
+
     <% }); %>
 
 
@@ -63,10 +75,9 @@ var statsData = <%= JSON.stringify(json.data) %>;
 
 // fills in HTML for year as years toggle
 var updateInfo = function(data) {
-  console.log(data);
   document.querySelector("#season").innerHTML = "<div class='season'>"+data.season+"</div>";
-  document.querySelector("#warriors-fact").innerHTML = "<div class='score warriors'>Warriors: "+data.w_score+"</div><div class='desc'>"+data.w_text+"</div>";
-  document.querySelector("#cavs-fact").innerHTML = "<div class='score cavs'>Cavaliers: "+data.c_score+"</div><div class='desc'>"+data.c_text+"</div>";
+  document.querySelector("#warriors-fact").innerHTML = "<div class='score warscore'>Warriors: "+data.w_score+"</div><div class='desc'>"+data.w_text+"</div>";
+  document.querySelector("#cavs-fact").innerHTML = "<div class='score cavscore'>Cavaliers: "+data.c_score+"</div><div class='desc'>"+data.c_text+"</div>";
 };
 
 // color by year function
@@ -83,7 +94,7 @@ var margin = {
   top: 0,
   right: 50,
   bottom: 50,
-  left: 50
+  left: 30
 };
 if (screen.width > 768) {
   var width = 900 - margin.left - margin.right;
@@ -95,8 +106,8 @@ if (screen.width > 768) {
   console.log("big phone");
   var margin = {
     top: 20,
-    right: 20,
-    bottom: 35,
+    right: 50,
+    bottom: 40,
     left: 30
   };
   var width = 340 - margin.left - margin.right;
@@ -104,10 +115,10 @@ if (screen.width > 768) {
 } else if (screen.width <= 340) {
   console.log("mini iphone")
   var margin = {
-    top: 50,
-    right: 30,
-    bottom: 35,
-    left: 35
+    top: 20,
+    right: 50,
+    bottom: 40,
+    left: 30
   };
   var width = 310 - margin.left - margin.right;
   var height = 350 - margin.top - margin.bottom;
@@ -166,27 +177,6 @@ g.append("path")
     .attr("class","thicklines")
     .style("stroke",color_by_team("cavs"))
     .attr("d", lineCavs);
-
-
-// add the valueline path
-// add the area
-// g.append("path")
-//    .data([statsData])
-//    .attr("class", "area")
-//    .attr("fill",color_by_team("warriors"))
-//    .attr("opacity","0.2")
-//    .transition()
-//        .duration(7000)
-//        .attrTween('d', areaTweenWAR);
-
-// g.append("path")
-//   .data([statsData])
-//   .attr("class", "area")
-//   .attr("fill",color_by_team("cavs"))
-//   .attr("opacity","0.2")
-//   .transition()
-//       .duration(7000)
-//       .attrTween('d', areaTweenCAV);
 
 // define the area
 var areaWAR = d3.area()
@@ -288,12 +278,34 @@ var tick = function() {
 
 tick();
 
-// tempData = statsData;
-// g.append("path")
-//    .data([statsData])
-//    .attr("fill",color_by_team("warriors"))
-//    .attr("opacity","0.2")
-//    .attr("d", areaWAR);
+var dropDown = document.getElementById('select-season');
+dropDown.addEventListener('change', function(d) {
+  looping = false;
+  clearTimeout(loop);
+
+  i = 0;
+  updateInfo(statsData[i]);
+  // loop = setTimeout(tick, i == 0 ? 1700 : 1000);
+
+  tempData = statsData.slice(0,i+1);
+  // console.log(statsData);
+  // console.log(tempData);
+  d3.select("#warriors_area").remove();
+  d3.select("#cavs_area").remove();
+  g.append("path")
+     .data([tempData])
+     .attr("id","warriors_area")
+     .attr("fill",color_by_team("warriors"))
+     .attr("opacity","0.2")
+     .attr("d", areaWAR);
+
+   g.append("path")
+      .data([tempData])
+      .attr("id","cavs_area")
+      .attr("fill",color_by_team("cavs"))
+      .attr("opacity","0.2")
+      .attr("d", areaCAV);
+});
 
 
 </script>
