@@ -12,38 +12,19 @@
 
 <div class="scrolly-interactive">
 
-  <div class="hed-wrapper">
-    <div class="hed">The Drive to Dominance</div>
-    <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
-  </div>
+  
 
   <div class="interactive-box">
-
-    <div class="controls">
-      <div class="button" id="play-button">Play the animation</div>
-      <div class="drop-down">
-        <div class="select-text">Pick a year:</div>
-        <div class="select-container">
-          <select name="select" id="select-season">
-              <option value="2007">--</option>
-            <% [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016].forEach(function(d,idx){ %>
-              <option value='<%=d%>' class="station"><%=d%> - <%=d+1%></option>
-            <% }); %>
-          </select>
-        </div>
-      </div>
+    <div class="hed-wrapper">
+      <div class="hed">The Drive to Dominance</div>
+      <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
     </div>
 
-    <div class="fact-container">
-      <div id="season"></div>
-      <div id="warriors-fact" class="fact"></div>
-      <div id="cavs-fact" class="fact"></div>
-    </div>
 
     <div class="chart-container">
       <div id="line-chart"></div>
     </div>
-    <div class="credit">Emma O'Neill • <a href="mailto:eoneill@sfchronicle.com">eoneill@sfchronicle.com</a> • <a href = "https://twitter.com/emmaruthoneill" target="_blank">@emmaruthoneill</a></div>
+    
 
   </div>
 
@@ -102,8 +83,8 @@ var margin = {
   left: 30
 };
 if (screen.width > 768) {
-  var width = 900 - margin.left - margin.right;
-  var height = 500 - margin.top - margin.bottom;
+  var width = 1800 - margin.left - margin.right;
+  var height = 1000 - margin.top - margin.bottom;
 } else if (screen.width <= 768 && screen.width > 480) {
   var width = 720 - margin.left - margin.right;
   var height = 500 - margin.top - margin.bottom;
