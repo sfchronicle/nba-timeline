@@ -93,7 +93,7 @@
     stroke-width: 1;
   }
   .credit {
-    padding-top: 30px;
+    padding-top: 10px;
     max-width: 900px;
     margin: auto;
     font-size: 14px;
@@ -125,6 +125,29 @@
     @media @mobile {
       min-width: 0;
     }
+  }
+  .button {
+    text-align: center;
+    pointer-events: all;
+    font-family: @bold-graphics;
+    // width: 100%;
+    cursor: pointer;
+    max-width: 200px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 2px 20px;
+    background: #006BB6;
+    color: white;
+    border-radius: 2px;
+    &.active {
+      color: #006BB6;
+      background: white;
+      border: 2px solid #006BB6;
+    }
+  }
+  .interactive-box {
+    background: #F2F2F2;
+    padding: 30px 0;
   }
 
 }
