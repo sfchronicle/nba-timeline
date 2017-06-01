@@ -14,25 +14,12 @@
 
   <div class="hed-wrapper">
     <div class="hed">The Drive to Dominance</div>
-    <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
+    <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons.</div>
+    <div class="instructions">Scroll down to see how we got to Warriors-Cavs, Part III.<i class="fa fa-angle-double-down" aria-hidden="true"></i></div>
   </div>
 
-  <div class="interactive-box">
-
-    <div class="controls">
-      <div class="button" id="play-button">Play the animation</div>
-      <div class="drop-down">
-        <div class="select-text">Pick a year:</div>
-        <div class="select-container">
-          <select name="select" id="select-season">
-              <option value="2007">--</option>
-            <% [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016].forEach(function(d,idx){ %>
-              <option value='<%=d%>' class="station"><%=d%> - <%=d+1%></option>
-            <% }); %>
-          </select>
-        </div>
-      </div>
-    </div>
+  <div id="stick-here"></div>
+  <div class="interactive-box" id="stick-me">
 
     <div class="fact-container">
       <div id="season"></div>
@@ -46,6 +33,8 @@
     <div class="credit">Emma O'Neill • <a href="mailto:eoneill@sfchronicle.com">eoneill@sfchronicle.com</a> • <a href = "https://twitter.com/emmaruthoneill" target="_blank">@emmaruthoneill</a></div>
 
   </div>
+  <div id="stick-ph"></div>
+  <div id="stop-stick-here"></div>
 
 </div>
 
@@ -287,16 +276,11 @@ nodes.append("text")
 
 var years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];
 var i = 0;
-
-var loop = null;
 var tempData;
 var tick = function() {
   updateInfo(statsData[i]);
-  // loop = setTimeout(tick, i == 0 ? 1700 : 1000);
 
   tempData = statsData.slice(0,i+1);
-  // console.log(statsData);
-  // console.log(tempData);
   d3.select("#warriors_area").remove();
   d3.select("#cavs_area").remove();
   g.append("path")
@@ -312,54 +296,118 @@ var tick = function() {
       .attr("fill",color_by_team("cavs"))
       .attr("opacity","0.2")
       .attr("d", areaCAV);
-
-  loop = setTimeout(tick, i == 0 ? 13000 : 13000);
-  i = (i + 1) % years.length;
 };
 
-// tick();
-// var looping = true;
+tick();
 
-var dropDown = document.getElementById('select-season');
-dropDown.addEventListener('change', function(d) {
-  looping = false;
-  clearTimeout(loop);
-  document.getElementById("play-button").classList.remove("active");
+window.onscroll = function() {activate()};
 
-  i = years.indexOf(Number(dropDown.value));
-  updateInfo(statsData[i]);
-  // loop = setTimeout(tick, i == 0 ? 1700 : 1000);
+function activate() {
 
-  tempData = statsData.slice(0,i+1);
-  // console.log(statsData);
-  // console.log(tempData);
-  d3.select("#warriors_area").remove();
-  d3.select("#cavs_area").remove();
-  g.append("path")
-     .data([tempData])
-     .attr("id","warriors_area")
-     .attr("fill",color_by_team("warriors"))
-     .attr("opacity","0.2")
-     .attr("d", areaWAR);
+//   var sticker = document.getElementById('stick-me');
+// var sticker_ph = document.getElementById('stick-ph');
+// var window_top = document.body.scrollTop;
+// var div_top = document.getElementById('stick-here').getBoundingClientRect().top + window_top;
+// // var long = document.getElementById('long');
+//
+// if (window_top > div_top) {
+//     sticker.classList.add('fixed');
+//     sticker_ph.style.display = 'block'; // puts in a placeholder for where sticky used to be for smooth scrolling
+//     // long.style.display = 'inline-block';
+// } else {
+//     sticker.classList.remove('fixed');
+//     sticker_ph.style.display = 'none'; // removes placeholder
+//     // long.style.display = 'none';
+// }
 
-   g.append("path")
-      .data([tempData])
-      .attr("id","cavs_area")
-      .attr("fill",color_by_team("cavs"))
-      .attr("opacity","0.2")
-      .attr("d", areaCAV);
-});
+  var sticker = document.getElementById('stick-me');
+  var sticker_ph = document.getElementById('stick-ph');
+  var window_top = document.body.scrollTop;
+  var sticker_stop = document.getElementById('stop-stick-here').getBoundingClientRect().top + window_top-500;
+  var div_top = document.getElementById('stick-here').getBoundingClientRect().top + window_top;
 
-var clickbutton = document.getElementById('play-button');
-clickbutton.addEventListener('click', function(d) {
-  clearTimeout(loop);
-  if (!looping) {
-    clickbutton.classList.add("active");
-    i = 0;
-    tick();
-    var looping = true;
+  if ((window_top > div_top) && (window_top < sticker_stop)) {
+    sticker.classList.add('fixed-class');
+    sticker_ph.style.height = "2000px";
+    sticker_ph.style.display = 'block'; // puts in a placeholder for where sticky used to be for smooth scrolling
+  } else {
+    sticker.classList.remove('fixed-class');
+    sticker_ph.style.display = 'none'; // removes placeholder
   }
-});
+
+  currentPosition = getPageScroll();
+  i = Math.floor(currentPosition/2000*10);
+  console.log(i);
+  if (i < 10 && i > -1) {
+    tick();
+  }
+}
+
+
+// desktop scrolling controls ----------------------------------------------------------------
+
+function getPageScroll() {
+  var yScroll;
+
+  if (window.pageYOffset) {
+    yScroll = window.pageYOffset;
+  } else if (document.documentElement && document.documentElement.scrollTop) {
+    yScroll = document.documentElement.scrollTop;
+  } else if (document.body) {
+    yScroll = document.body.scrollTop;
+  }
+  return yScroll;
+}
+
+
+// mobile swiping controls --------------------------------------------------------------------
+
+document.addEventListener('touchstart', handleTouchStart, false);
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;
+var yDown = null;
+
+function handleTouchStart(evt) {
+    xDown = evt.touches[0].clientX;
+    yDown = evt.touches[0].clientY;
+};
+
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+        // if ( xDiff > 0 ) {
+        //     /* left swipe */
+        // } else {
+        //     /* right swipe */
+        // }
+    } else {
+        if ( yDiff > 0 ) {
+          // up swipe
+          i = i+1;
+          // filling in slide
+          tick();
+        } else {
+          // down swipe
+          i = i-1;
+          // filling in slide
+          tick();
+        }
+    }
+    /* reset values */
+    xDown = null;
+    yDown = null;
+};
+
 
 
 </script>
