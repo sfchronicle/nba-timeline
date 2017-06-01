@@ -1,72 +1,32 @@
-<!-- build:remove -->
-<%= t.include("partials/_top.html") %>
-<!-- /build -->
-<!-- build:css inline -->
-<link rel="stylesheet" type="text/css" href="style.css">
-<!-- /build -->
+<!doctype html>
+<html>
+  <head>
+    <title><%= json.project.seo_title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="__sync_contentCategory" content="meterA">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <%= !json.project.embedded ? t.include("partials/_paywall.html") : t.include("partials/_embedframe.html") %>
+
+    <%= t.include("partials/_head.html") %>
+
+  </head>
+
+  <%= !json.project.embedded ? "<body>" : "<body is='responsive-body'>" %>
+
+    <%= t.include("partials/_nav.html") %>
 
 
-<!-- Code that goes within WCM Freeform -->
-
-
-
-<div id="timeline-container">
-  <div class="timeline-title">The drive to dominance</div>
-  <div class="timeline-deck">While the <span class="c">Cavaliers'</span> fortunes have been tied directly to the comings and goings of LeBron James, the <span class="w">Warriors</span> had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.
-  </div>
-  <hr class="hr">
-    <% json.timeline.forEach(function(date) { %>
-
-     <div class="timeline">
-
-      <% if(date.war_date) { %>
-      <div class="block warriors">
-         <h2 class="w"><%= date.war_date %></h2>
-         <p><%= date.war_text %></p>
-      </div>
-
-    <% }else if(!date.png){ %>
-    <div class="block warriors"></div>
-      <% } %>
-
-    <% if(date.png) { %>
-      <div class="block warriors <%= date.png %>">
-         <img src="<%= date.war_img %>">
-      </div>
-    <% } %>
-
-    <% if(date.cav_date) { %>
-      <div class="block cavs">
-        <h2 class="c"><%= date.cav_date %></h2>
-        <p><%= date.cav_text %></p>
-      </div>
-
-    <% }else if(!date.cav_img){ %>
-    <div class="block cavs"></div>
-    <% } %>
-    
-    <% if(date.cav_img) { %>
-      <div class="block warriors jpg">
-         <img src="<%= date.cav_img %>">
-      </div>
-    <% } %>
-      
-    </div>
-    <% }); %>
-   
-    <div class="credit">Graphics by: Mike Massa, John Blanchard, Daymond Gascon and Danielle Mollete-Parks
-    </div>
-    <div class="credit">Developed by: Lucio Villa
+    <div class="container">
+      <p>Content goes here...</p>
     </div>
 
-   
-</div>
+    <%= t.include("partials/_footer.html") %>
 
+    <script src="app.js" async></script>
+    <%= t.include("partials/_helloSFC.html") %>
 
-<!-- build:remove -->
-<%= t.include("partials/_bottom.html") %>
-<!-- /build -->
-
-
-
-</script>
+  </body>
+</html>
