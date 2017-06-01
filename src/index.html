@@ -39,25 +39,51 @@
 
 </div>
 
-
+<div id="timeline-container">
   <div class="timeline-title">
-    How the Warriors and Cavs got here
+    How the <span class="w">Warriors</span> and <span class="c">Cavs</span> got here
   </div>
+  <hr class="hr">
     <% json.timeline.forEach(function(date) { %>
 
-    <div class="timeline">
-      <div class="block warriors">
-         <h2><%= date.war_date %></h2>
-         <p><%= date.war_text %></p>
+     <div class="timeline">
 
+      <% if(date.war_date) { %>
+      <div class="block warriors">
+         <h2 class="w"><%= date.war_date %></h2>
+         <p><%= date.war_text %></p>
       </div>
+
+    <% }else if(!date.png){ %>
+    <div class="block warriors"></div>
+      <% } %>
+
+    <% if(date.png) { %>
+      <div class="block warriors <%= date.png %>">
+         <img src="<%= date.war_img %>">
+      </div>
+    <% } %>
+
+    <% if(date.cav_date) { %>
       <div class="block cavs">
-        <h2><%= date.cav_date %></h2>
+        <h2 class="c"><%= date.cav_date %></h2>
         <p><%= date.cav_text %></p>
       </div>
+
+    <% }else if(!date.cav_img){ %>
+    <div class="block cavs"></div>
+    <% } %>
+    
+    <% if(date.cav_img) { %>
+      <div class="block warriors jpg">
+         <img src="<%= date.cav_img %>">
+      </div>
+    <% } %>
+      
     </div>
 
     <% }); %>
+</div>
 
 
 <!-- build:remove -->
