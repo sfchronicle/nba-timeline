@@ -29,6 +29,27 @@
 
 </div>
 
+
+  <div class="timeline-title">
+    How the Warriors and Cavs got here
+  </div>
+    <% json.timeline.forEach(function(date) { %>
+      
+    <div class="timeline">
+      <div class="block warriors">
+         <h2><%= date.war_date %></h2>
+         <p><%= date.war_text %></p>
+         
+      </div>
+      <div class="block cavs">
+        <h2><%= date.cav_date %></h2>
+        <p><%= date.cav_text %></p>
+      </div>
+    </div>
+     
+    <% }); %>
+
+
 <!-- build:remove -->
 <%= t.include("partials/_bottom.html") %>
 <!-- /build -->
