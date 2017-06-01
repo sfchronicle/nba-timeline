@@ -19,6 +19,29 @@
     margin: auto;
     padding: 0 30px;
   }
+  .fact-container {
+    max-width: 900px;
+    margin: auto;
+    .season {
+      font-size: 20px;
+      font-family: @bold-graphics;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid @dark-gray;
+    }
+    .fact {
+      padding-bottom: 20px;
+    }
+    .score {
+      font-family: @med-graphics;
+      &.warriors {
+        color: #006BB6;
+      }
+      &.cavs {
+        color: #860038;
+      }
+    }
+  }
 
   .instructions {
     .fa {

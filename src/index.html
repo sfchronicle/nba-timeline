@@ -19,8 +19,11 @@
     <div class="deck">While the Cavaliers' fortunes have been tied directly to the comings and goings of LeBron James, the Warriors had only glimpses of success before drafting the core of a team that set an NBA record with 73 wins and is looking for its second title in three seasons. Here's a look at how we got to Warriors-Cavs, Part III.</div>
   </div>
 
-  <div id="warriors-fact"></div>
-  <div id="cavs-fact"></div>
+  <div class="fact-container">
+    <div id="season"></div>
+    <div id="warriors-fact" class="fact"></div>
+    <div id="cavs-fact" class="fact"></div>
+  </div>
 
   <div class="chart-container">
     <div id="line-chart"></div>
@@ -57,6 +60,15 @@
 <script>
 
 var statsData = <%= JSON.stringify(json.data) %>;
+
+// fills in HTML for year as years toggle
+var updateInfo = function(data) {
+  console.log(data);
+  document.querySelector("#season").innerHTML = "<div class='season'>"+data.season+"</div>";
+  document.querySelector("#warriors-fact").innerHTML = "<div class='score warriors'>Warriors: "+data.w_score+"</div><div class='desc'>"+data.w_text+"</div>";
+  document.querySelector("#cavs-fact").innerHTML = "<div class='score cavs'>Cavaliers: "+data.c_score+"</div><div class='desc'>"+data.c_text+"</div>";
+};
+
 // color by year function
 function color_by_team(team) {
   if (team == "warriors") {
@@ -116,7 +128,7 @@ var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]);
 
 x.domain([parseYr(2007),parseYr(2016)]);
-y.domain([0,90]);
+y.domain([0,80]);
 
 var lineWarriors = d3.line()
     .x(function(d) {
@@ -158,23 +170,23 @@ g.append("path")
 
 // add the valueline path
 // add the area
-g.append("path")
-   .data([statsData])
-   .attr("class", "area")
-   .attr("fill",color_by_team("warriors"))
-   .attr("opacity","0.2")
-   .transition()
-       .duration(7000)
-       .attrTween('d', areaTweenWAR);
+// g.append("path")
+//    .data([statsData])
+//    .attr("class", "area")
+//    .attr("fill",color_by_team("warriors"))
+//    .attr("opacity","0.2")
+//    .transition()
+//        .duration(7000)
+//        .attrTween('d', areaTweenWAR);
 
-g.append("path")
-  .data([statsData])
-  .attr("class", "area")
-  .attr("fill",color_by_team("cavs"))
-  .attr("opacity","0.2")
-  .transition()
-      .duration(7000)
-      .attrTween('d', areaTweenCAV);
+// g.append("path")
+//   .data([statsData])
+//   .attr("class", "area")
+//   .attr("fill",color_by_team("cavs"))
+//   .attr("opacity","0.2")
+//   .transition()
+//       .duration(7000)
+//       .attrTween('d', areaTweenCAV);
 
 // define the area
 var areaWAR = d3.area()
@@ -241,6 +253,47 @@ nodes.append("text")
   .text(function(d){
     return d.w_score;
   });
+
+var years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];
+var i = 0;
+
+var loop = null;
+var tempData;
+var tick = function() {
+  updateInfo(statsData[i]);
+  // loop = setTimeout(tick, i == 0 ? 1700 : 1000);
+
+  tempData = statsData.slice(0,i+1);
+  // console.log(statsData);
+  // console.log(tempData);
+  d3.select("#warriors_area").remove();
+  d3.select("#cavs_area").remove();
+  g.append("path")
+     .data([tempData])
+     .attr("id","warriors_area")
+     .attr("fill",color_by_team("warriors"))
+     .attr("opacity","0.2")
+     .attr("d", areaWAR);
+
+   g.append("path")
+      .data([tempData])
+      .attr("id","cavs_area")
+      .attr("fill",color_by_team("cavs"))
+      .attr("opacity","0.2")
+      .attr("d", areaCAV);
+
+  loop = setTimeout(tick, i == 0 ? 4000 : 4000);
+  i = (i + 1) % years.length;
+};
+
+tick();
+
+// tempData = statsData;
+// g.append("path")
+//    .data([statsData])
+//    .attr("fill",color_by_team("warriors"))
+//    .attr("opacity","0.2")
+//    .attr("d", areaWAR);
 
 
 </script>
