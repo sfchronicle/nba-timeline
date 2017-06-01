@@ -152,19 +152,71 @@
 
 }
 
+.w{
+  background-color: #006BB6;
+  padding: 2px 5px;
+  color: white;
+  font-family:@med-graphics;
+  display:inline;
+   
+}
 
+.c{
+  background-color: #860038;
+  padding: 2px 5px;
+  color: white;
+  font-family:@med-graphics;
+  display:inline;
+}
+.hr{
+  max-width:500px;
+  margin-bottom: 20px;
+}
 .timeline{
   .display-flex;
   .justify-content(center);
+  padding:0 10px;
 }
 
 .timeline-title{
-  font-size:30px;
+  font-size:50px;
+  line-height:1.56;
+  margin-bottom:20px;
   text-align:center;
+  font-family:@med-graphics;
+
+  @media @mobile{
+    font-size:25px;
+  }
 }
 .block{
   .flex(0 0 49%);
   padding: 0 10px;
+  max-width:400px;
+
+  p{
+    font-size:18px;
+
+    @media @mobile{
+      font-size:15px;
+      line-height:20px;
+    }
+  }
+  &.jpg{
+    img{width:100%;}
+  }
+  &.png{
+      img{
+        max-width:150px;
+        width:100%;
+        @media @mobile{
+          max-width:80px;
+        }
+      }
+      @media @mobile{
+      .align-self(flex-end);
+      }
+  }
 }
 
 .warriors{
